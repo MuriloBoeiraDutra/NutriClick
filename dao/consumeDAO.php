@@ -27,7 +27,8 @@ function delete_consume_database($user_id, $food_id, $data_ingestao, $meal_time)
         WHERE user_id = :user_id 
         AND food_id = :food_id 
         AND DATE(data_ingestao) = DATE(:data_ingestao) 
-        AND (:meal_time IS NULL OR meal_time = :meal_time)');
+        AND (:meal_time IS NULL OR meal_time = :meal_time)
+        LIMIT 1');
 
     $stmt->bindParam(':user_id', $user_id, \PDO::PARAM_STR);
     $stmt->bindParam(':food_id', $food_id, \PDO::PARAM_STR);
@@ -36,7 +37,12 @@ function delete_consume_database($user_id, $food_id, $data_ingestao, $meal_time)
 
     try {
         $stmt->execute();
-        return ['status' => true, 'message' => null];
+        
+        if ($stmt->rowCount() > 0) {
+            return ['status' => true, 'message' => null];
+        } else {
+            return ['status' => false, 'message' => 'Nenhum registro encontrado para deletar.'];
+        }
     } catch (\PDOException $e) {
         return ['status' => false, 'message' => $e->getMessage()];
     }

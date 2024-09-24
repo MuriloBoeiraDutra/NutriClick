@@ -66,6 +66,7 @@ Content-Type: application/json
 {
     "user_id": 15,
     "food_id": 3,
+    "data_ingestao": "2024-09-23",
     "meal_time": "café da manhã"
 }
 
@@ -76,10 +77,10 @@ DELETE http://localhost/routes/user/consume/
 Content-Type: application/json
 
 {
-    "user_id": 6,
-    "food_id": 100,
-    "data_ingestao": "2024-09-22 12:26:23",
-    "meal_time": "almoço"
+    "user_id": 15,
+    "food_id": 3,
+    "data_ingestao": "2024-09-24",
+    "meal_time": null
 }
 
 ###

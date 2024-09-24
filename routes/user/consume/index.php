@@ -17,6 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if ($result['status'] === true) {
     http_response_code(200);
+} else if ($result['status'] === false && $_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    http_response_code(404);
 } else {
     http_response_code(400);
 }
