@@ -1,0 +1,101 @@
+// Login e registro
+
+POST http://localhost/routes/
+Content-Type: application/json
+
+###
+POST http://localhost/routes/login/
+Content-Type: application/json
+
+{
+    "email": "larla@gmail.com",
+    "password": "larinha"
+}
+
+###
+POST http://localhost/routes/login/
+Content-Type: application/json
+{
+    "email": "muriloboeira2@gmail.com",
+    "password": ""
+}
+
+###
+POST http://localhost/routes/register/
+Content-Type: application/json
+{
+    "username"        : "Lara",
+    "senha"           : "larinha",
+    "altura"          : 1.75,
+    "peso"            : 50,
+    "nivel_atividade" : "ativo",
+    "email"           : "lara@gmail.com"
+}
+
+// Get pelo nome dos alimentos e pelo ID
+
+###
+GET http://localhost/routes/food/
+Content-Type: application/json
+
+{
+    "nome": "Arroz"
+}
+
+###
+GET http://localhost/routes/food/
+Content-Type: application/json
+
+{
+    "id": 36
+}
+
+###
+GET http://localhost/routes/food/
+Content-Type: application/json
+
+{
+}
+
+//Adicionar alimento no consume e deletar
+
+###
+POST http://localhost/routes/user/consume/
+Content-Type: application/json
+
+{
+    "user_id": 15,
+    "food_id": 3,
+    "meal_time": "café da manhã"
+}
+
+
+###
+
+DELETE http://localhost/routes/user/consume/
+Content-Type: application/json
+
+{
+    "user_id": 6,
+    "food_id": 100,
+    "data_ingestao": "2024-09-22 12:26:23",
+    "meal_time": "almoço"
+}
+
+###
+
+DELETE http://localhost/routes/user/consume/
+Content-Type: application/json
+
+{
+    "user_id": 6234,
+    "meal_time": "almoço"
+}
+
+###
+
+DELETE http://localhost/routes/user/consume/
+Content-Type: application/json
+
+{
+}
