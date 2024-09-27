@@ -64,10 +64,9 @@ POST http://localhost/routes/user/consume/
 Content-Type: application/json
 
 {
-    "user_id": 15,
-    "food_id": 3,
-    "data_ingestao": "2024-09-23",
-    "meal_time": "café da manhã"
+    "user_id": 1,
+    "food_id": 32,
+    "meal_time": "caffé da manhã"
 }
 
 
@@ -77,10 +76,7 @@ DELETE http://localhost/routes/user/consume/
 Content-Type: application/json
 
 {
-    "user_id": 15,
-    "food_id": 3,
-    "data_ingestao": "2024-09-24",
-    "meal_time": null
+    "id": 78978
 }
 
 ###

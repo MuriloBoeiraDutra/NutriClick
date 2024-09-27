@@ -4,7 +4,10 @@ require_once "dao/consumeDAO.php";
 function register_consume() {
     $user_id = $_POST['user_id'] ?? null;
     $food_id = $_POST['food_id'] ?? null;
+    $gramas = $_POST['gramas'] ?? null;
     $meal_time = $_POST['meal_time'] ?? null;
+
+    $valid_meal_times = ['café da manhã', 'almoço', 'lanche', 'janta'];
 
     if ($user_id == null) {
         return ["result" => "Id do usuário não pode ser nulo!", "status" => false];
@@ -15,29 +18,28 @@ function register_consume() {
     }
 
     if ($meal_time == null) {
-        return ["result" => "Hora da refeição não pode ser nula!", "status" => false];
+        return ["result" => "Momento da refeição não pode ser nula!", "status" => false];
     }
 
-    return register_consume_database($user_id, $food_id, $meal_time);
+    $meal_time_lower = strtolower($meal_time);
+
+    if (!in_array($meal_time_lower, array_map('strtolower', $valid_meal_times))) {
+        return ["result" => "Momento da refeição inválido!", "status" => false];
+    }
+
+    return register_consume_database($user_id, $food_id, $meal_time, $gramas);
 }
 
 function delete_consume($requestBody) {
-    $user_id = $requestBody['user_id'] ?? null;
-    $food_id = $requestBody['food_id'] ?? null;
-    $data_ingestao = $requestBody['data_ingestao'] ?? null;
-    $meal_time = $requestBody['meal_time'] ?? null;
+    $consume_id = $requestBody['id'] ?? null;
 
-    if ($user_id == null) {
-        return ["result" => "Id do usuário não pode ser nulo!", "status" => false];
+    if (!is_numeric($consume_id)) {
+        return ["result" => "Id deve ser um número válido!", "status" => false];
     }
 
-    if ($food_id == null) {
-        return ["result" => "Id do alimento não pode ser nulo!", "status" => false];
+    if ($consume_id == null) {
+        return ["result" => "O id não pode ser nulo!", "status" => false];
     }
 
-    if ($data_ingestao == null) {
-        return ["result" => "A data da ingestão não pode ser nula!", "status" => false];
-    }
-
-    return delete_consume_database($user_id, $food_id, $data_ingestao, $meal_time);
+    return delete_consume_database($consume_id);
 }

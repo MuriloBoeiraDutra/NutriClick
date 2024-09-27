@@ -1,15 +1,16 @@
 <?php 
 require_once "dao/db_connection.php";
 
-function register_consume_database($user_id, $food_id, $meal_time) {
+function register_consume_database($user_id, $food_id, $meal_time, $gramas) {
     global $pdo;
     
     $stmt = $pdo->prepare(
-        "INSERT INTO consume (user_id, food_id, meal_time) 
-        VALUES (:user_id, :food_id, :meal_time)");
-    $stmt->bindValue(":user_id", $user_id, \PDO::PARAM_STR);
-    $stmt->bindValue(":food_id", $food_id, \PDO::PARAM_STR);
+        "INSERT INTO consume (user_id, food_id, meal_time, gramas) 
+        VALUES (:user_id, :food_id, :meal_time, :gramas)");
+    $stmt->bindValue(":user_id", $user_id, \PDO::PARAM_INT);
+    $stmt->bindValue(":food_id", $food_id, \PDO::PARAM_INT);
     $stmt->bindValue(":meal_time", $meal_time, \PDO::PARAM_STR);
+    $stmt->bindValue(":gramas", $gramas, \PDO::PARAM_STR);
         
     try {
         $stmt->execute();
@@ -20,20 +21,12 @@ function register_consume_database($user_id, $food_id, $meal_time) {
 
 }
 
-function delete_consume_database($user_id, $food_id, $data_ingestao, $meal_time) {
+function delete_consume_database($id) {
     global $pdo;
 
-    $stmt = $pdo->prepare('DELETE FROM consume 
-        WHERE user_id = :user_id 
-        AND food_id = :food_id 
-        AND DATE(data_ingestao) = DATE(:data_ingestao) 
-        AND (:meal_time IS NULL OR meal_time = :meal_time)
-        LIMIT 1');
+    $stmt = $pdo->prepare('DELETE FROM consume WHERE id = :id LIMIT 1');
 
-    $stmt->bindParam(':user_id', $user_id, \PDO::PARAM_STR);
-    $stmt->bindParam(':food_id', $food_id, \PDO::PARAM_STR);
-    $stmt->bindParam(':data_ingestao', $data_ingestao, \PDO::PARAM_STR);
-    $stmt->bindParam(':meal_time', $meal_time, \PDO::PARAM_STR);
+    $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
 
     try {
         $stmt->execute();
