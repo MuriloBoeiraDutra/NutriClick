@@ -1,5 +1,7 @@
 <?php 
+session_start();
 require_once 'actions/consume_action.php';
+require_once 'utils/imports.php';
 
 $requestBody = json_decode(file_get_contents("php://input"), true);
 
@@ -30,17 +32,5 @@ if ($result['status'] === true) {
 }
 
 echo json_encode($result, JSON_UNESCAPED_UNICODE);
-
-
-/*CREATE TABLE nutriclick.consume (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    food_id INT,
-    data_ingestao DATE DEFAULT CURRENT_DATE,  -- Armazena a data atual automaticamente
-    meal_time ENUM('café da manhã', 'almoço', 'lanche', 'janta'),  -- Opções de refeição
-    gramas DECIMAL(10, 2),
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (food_id) REFERENCES foods(id)
-);*/
 
 ?>

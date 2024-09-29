@@ -1,4 +1,6 @@
 <?php 
+session_start();
+require_once 'utils/imports.php';
 require_once 'actions/food_action.php';
 
 $_GET = json_decode(file_get_contents("php://input"), true);

@@ -1,14 +1,11 @@
 // Login e registro
 
-POST http://localhost/routes/
-Content-Type: application/json
-
 ###
 POST http://localhost/routes/login/
 Content-Type: application/json
 
 {
-    "email": "larla@gmail.com",
+    "email": "lara@gmail.com",
     "password": "larinha"
 }
 
@@ -16,8 +13,8 @@ Content-Type: application/json
 POST http://localhost/routes/login/
 Content-Type: application/json
 {
-    "email": "muriloboeira2@gmail.com",
-    "password": ""
+    "email": ,
+    "password": 
 }
 
 ###
