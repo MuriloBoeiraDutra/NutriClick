@@ -27,7 +27,7 @@ function register_user_database($username, $password, $height, $weight, $email, 
 function login_user_database($email, $password) {
     global $pdo;
 
-    $stmt = $pdo->prepare("SELECT senha FROM user WHERE email = :email");
+    $stmt = $pdo->prepare("SELECT id, username, altura, peso, nivel_atividade, senha FROM user WHERE email = :email");
     $stmt->bindValue(":email", $email, \PDO::PARAM_STR);
 
     try {
@@ -37,7 +37,12 @@ function login_user_database($email, $password) {
         if ($user) {
             $hashed_password = $user['senha'];
             if (password_verify($password, $hashed_password)) {
-                return ['status' => true, 'message' => null];
+                unset($user['senha']);
+                return [
+                    'status' => true,
+                    'data' => $user,
+                    'message' => null
+                ];
             } else {
                 return ['status' => false, 'message' => 'Senha incorreta'];
             }
@@ -45,7 +50,7 @@ function login_user_database($email, $password) {
             return ['status' => false, 'message' => 'Usuário não encontrado'];
         }
     } catch (\PDOException $e) {
-        return ['status' => false, 'message' => $e->getMessage()];
+        return ['status' => false, 'message' => 'Erro na conexão: ' . $e->getMessage()];
     }
 }
 

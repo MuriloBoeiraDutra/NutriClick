@@ -12,6 +12,15 @@ Content-Type: application/json
 ###
 POST http://localhost/routes/login/
 Content-Type: application/json
+
+{
+    "email": "muriloboeira2@gmail.com",
+    "password": ""
+}
+
+###
+POST http://localhost/routes/login/
+Content-Type: application/json
 {
     "email": ,
     "password": 
@@ -63,7 +72,7 @@ Content-Type: application/json
 {
     "user_id": 1,
     "food_id": 32,
-    "meal_time": "caffé da manhã"
+    "meal_time": "café da manhã"
 }
 
 

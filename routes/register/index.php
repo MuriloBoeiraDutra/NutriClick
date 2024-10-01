@@ -1,8 +1,8 @@
 <?php 
-session_start();
 require_once 'actions/register_action.php';
-require_once 'utils/imports.php';
+require_once 'utils/cors.php';
 
+cors();
 
 $_POST = json_decode(file_get_contents("php://input"), true);
 
