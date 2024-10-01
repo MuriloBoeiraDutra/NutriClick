@@ -23,24 +23,4 @@ function get_food_by_id(){
     return get_food_by_id_database($id);
 }
 
-function put_values($food, $novasGramas) {
-    if ($novasGramas < 0) {
-        return [
-            'error' => 'A quantidade de gramas não pode ser negativa.'
-        ];
-    }
-
-    $fator = $novasGramas / $food['gramas'];
-
-    return [
-        'id' => $food['id'],
-        'nome' => $food['nome'],
-        'gramas' => $novasGramas,
-        'calorias' => $food['calorias'] * $fator,
-        'carboidratos' => $food['carboidratos'] * $fator,
-        'proteinas' => $food['proteinas'] * $fator,
-        'gorduras' => $food['gorduras'] * $fator,
-    ];
-}
-
 ?>

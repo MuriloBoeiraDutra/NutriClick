@@ -16,7 +16,7 @@ $result = login_user();
 
 if ($result['status'] === true) {
     $_SESSION['authorized'] = true;
-    $_SESSION['expired'] = time() + 5;
+    $_SESSION['expired'] = time() + 60*60;
     http_response_code(200);
 } else {
     $_SESSION['authorized'] = false;

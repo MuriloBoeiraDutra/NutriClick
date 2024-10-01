@@ -14,11 +14,22 @@ function register_consume_database($user_id, $food_id, $meal_time, $gramas) {
         
     try {
         $stmt->execute();
-        return ['status' => true, 'message' => null];
+        $lastId = $pdo->lastInsertId();
+        
+        $stmt = $pdo->prepare("SELECT * FROM consume WHERE id = :id");
+        $stmt->bindValue(":id", $lastId, \PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $consume = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        return [
+            'status' => true,
+            'data' => $consume,
+            'message' => null
+        ];
     } catch (\PDOException $e) {
         return ['status' => false, 'message' => $e->getMessage()];
     }
-
 }
 
 function delete_consume_database($id) {
@@ -28,17 +39,46 @@ function delete_consume_database($id) {
 
     $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
 
-    try {
+    try {        
         $stmt->execute();
-        
+
         if ($stmt->rowCount() > 0) {
-            return ['status' => true, 'message' => null];
+            return ['status' => true, 'message' => 'Consumo deletado com sucesso.'];
         } else {
             return ['status' => false, 'message' => 'Nenhum registro encontrado para deletar.'];
         }
     } catch (\PDOException $e) {
         return ['status' => false, 'message' => $e->getMessage()];
     }
+}
+
+function put_consume_and_calculate_macros_database($id_food, $gramas) {
+    global $pdo;
+
+    // Obtenha os dados do alimento
+    $foodResult = get_food_by_id_database($id_food);
+    
+    if (!$foodResult['status']) {
+        return ['status' => false, 'mensagem' => 'Alimento não encontrado.'];
+    }
+
+    $foodData = $foodResult['data'];
+
+    // Calcule os macronutrientes baseados nas gramas
+    $carbs = ($foodData['carboidratos'] / $foodData['gramas']) * $gramas;
+    $proteins = ($foodData['proteinas'] / $foodData['gramas']) * $gramas;
+    $fats = ($foodData['gorduras'] / $foodData['gramas']) * $gramas;
+
+    // Retorne os macronutrientes calculados
+    return [
+        'status' => true,
+        'dados' => [
+            'carboidratos' => $carbs,
+            'proteinas' => $proteins,
+            'gorduras' => $fats,
+        ],
+        'mensagem' => 'Macronutrientes calculados com sucesso.'
+    ];
 }
 
 ?>

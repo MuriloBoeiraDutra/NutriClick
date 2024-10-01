@@ -1,31 +1,28 @@
 <?php 
-/*session_start();
+session_start();
 require_once 'utils/imports.php';
-require_once 'actions/food_action.php';
+require_once 'actions/consume_action.php';
 
-$_GET = json_decode(file_get_contents("php://input"), true);
+$_PUT = json_decode(file_get_contents("php://input"), true);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
     http_response_code(405);
-    die();
+    die(json_encode(['status' => false, 'mensagem' => 'Método não permitido'], JSON_UNESCAPED_UNICODE));
 }
 
-if (isset($_GET['id'])) {
-    $result = get_food_by_id();
-} elseif (isset($_GET['nome'])) {
-    $result = get_food_by_name();
+if (isset($_PUT['id_user']) && isset($_PUT['id_food']) && isset($_PUT['gramas'])) {
+    $resultado = put_consume($_PUT['id_user'], $_PUT['id_food'], $_PUT['gramas']);
 } else {
     http_response_code(400);
-    echo json_encode(['status' => false, 'message' => 'Parâmetro inválido. Forneça um nome ou ID.'], JSON_UNESCAPED_UNICODE);
+    echo json_encode(['status' => false, 'mensagem' => 'Parâmetro inválido. Forneça um ID de usuário, ID de alimento e as gramas.'], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-if ($result['status']) {
+if ($resultado['status']) {
     http_response_code(200);
 } else {
     http_response_code(404);
 }
 
-echo json_encode($result, JSON_UNESCAPED_UNICODE);*/
-
+echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
 ?>

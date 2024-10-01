@@ -70,9 +70,10 @@ POST http://localhost/routes/user/consume/
 Content-Type: application/json
 
 {
-    "user_id": 1,
-    "food_id": 32,
-    "meal_time": "café da manhã"
+    "user_id": 15,
+    "food_id": 50,
+    "meal_time": "almoço",
+    "gramas": 68
 }
 
 
@@ -82,7 +83,8 @@ DELETE http://localhost/routes/user/consume/
 Content-Type: application/json
 
 {
-    "id": 78978
+    "id": 11
+    //nao esta retornando quando da certo
 }
 
 ###
@@ -101,4 +103,14 @@ DELETE http://localhost/routes/user/consume/
 Content-Type: application/json
 
 {
+}
+###
+PUT http://localhost/routes/editgrams/
+Content-Type: application/json
+
+{
+    "id": 1,
+    "id_user": 1,
+    "id_food": 32,
+    "gramas": 100
 }
