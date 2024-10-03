@@ -14,19 +14,7 @@ function register_consume_database($user_id, $food_id, $meal_time, $gramas) {
         
     try {
         $stmt->execute();
-        $lastId = $pdo->lastInsertId();
-        
-        $stmt = $pdo->prepare("SELECT * FROM consume WHERE id = :id");
-        $stmt->bindValue(":id", $lastId, \PDO::PARAM_INT);
-        $stmt->execute();
-        
-        $consume = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-        return [
-            'status' => true,
-            'data' => $consume,
-            'message' => null
-        ];
+        return ['status' => true, 'message' => null];
     } catch (\PDOException $e) {
         return ['status' => false, 'message' => $e->getMessage()];
     }
@@ -55,7 +43,6 @@ function delete_consume_database($id) {
 function put_consume_and_calculate_macros_database($id_food, $gramas) {
     global $pdo;
 
-    // Obtenha os dados do alimento
     $foodResult = get_food_by_id_database($id_food);
     
     if (!$foodResult['status']) {
@@ -64,12 +51,10 @@ function put_consume_and_calculate_macros_database($id_food, $gramas) {
 
     $foodData = $foodResult['data'];
 
-    // Calcule os macronutrientes baseados nas gramas
     $carbs = ($foodData['carboidratos'] / $foodData['gramas']) * $gramas;
     $proteins = ($foodData['proteinas'] / $foodData['gramas']) * $gramas;
     $fats = ($foodData['gorduras'] / $foodData['gramas']) * $gramas;
 
-    // Retorne os macronutrientes calculados
     return [
         'status' => true,
         'dados' => [

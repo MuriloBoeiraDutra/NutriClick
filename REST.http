@@ -72,7 +72,7 @@ Content-Type: application/json
 {
     "user_id": 15,
     "food_id": 50,
-    "meal_time": "almoço",
+    "meal_time": "janta",
     "gramas": 68
 }
 
