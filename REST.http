@@ -22,7 +22,7 @@ Content-Type: application/json
 POST http://localhost/routes/login/
 Content-Type: application/json
 {
-    "email": ,
+    "email": null,
     "password": 
 }
 
@@ -45,7 +45,7 @@ GET http://localhost/routes/food/
 Content-Type: application/json
 
 {
-    "nome": "Alho"
+    "nome": ""
 }
 
 ###
@@ -53,7 +53,7 @@ GET http://localhost/routes/food/
 Content-Type: application/json
 
 {
-    "id": 36
+    "id": ""
 }
 
 ###
@@ -83,7 +83,7 @@ DELETE http://localhost/routes/user/consume/
 Content-Type: application/json
 
 {
-    "id": 11
+    "id": 13
     //nao esta retornando quando da certo
 }
 
@@ -108,3 +108,13 @@ Content-Type: application/json
 
 ###
 GET http://localhost/routes/user/consume/?user_id=15&data_ingestao=2024-10-03
+
+###
+
+PUT http://localhost/routes/user/consume/
+Content-Type: application/json
+
+{
+    "id": 10,
+    "gramas": 20
+}

@@ -10,25 +10,25 @@ function register_consume() {
     $valid_meal_times = ['café da manhã', 'almoço', 'lanche', 'janta'];
 
     if ($user_id == null || $user_id < 0 || !is_numeric($user_id)) {
-        return ["result" => "Id do usuário não pode ser nulo!", "status" => false];
+        return ["status" => false, "message" => "Id do usuário não pode ser nulo!"];
     }
 
     if ($food_id == null || $food_id < 0 || !is_numeric($food_id)) {
-        return ["result" => "Id do alimento não pode ser nulo!", "status" => false];
+        return ["status" => false, "message" => "Id do alimento não pode ser nulo!"];
     }
 
     if ($meal_time == null) {
-        return ["result" => "Momento da refeição não pode ser nula!", "status" => false];
+        return ["status" => false, "message" => "Momento da refeição não pode ser nula!"];
     }
 
     if ($gramas == null || $gramas < 0 || !is_numeric($gramas)) {
-        return ["result" => "As gramas não podem ser nulas", "status" => false];
+        return ["status" => false, "message" => "As gramas não podem ser nulas"];
     }
 
     $meal_time_lower = strtolower($meal_time);
 
     if (!in_array($meal_time_lower, array_map('strtolower', $valid_meal_times))) {
-        return ["result" => "Momento da refeição inválido!", "status" => false];
+        return ["status" => false, "message" => "Momento da refeição inválido!"];
     }
 
     return register_consume_database($user_id, $food_id, $meal_time, $gramas);
@@ -38,30 +38,40 @@ function delete_consume($requestBody) {
     $consume_id = $requestBody['id'] ?? null;
 
     if (!is_numeric($consume_id)) {
-        return ["result" => "Id deve ser um número válido!", "status" => false];
+        return ["status" => false, "message" => "Id deve ser um número válido!"];
     }
 
     if ($consume_id == null) {
-        return ["result" => "O id não pode ser nulo!", "status" => false];
+        return ["status" => false, "message" => "O id não pode ser nulo!"];
     }
 
     return delete_consume_database($consume_id);
 }
 
-function get_cunsume($user_id, $data_ingestao){
-    $user_id = $_GET['user_id'];
-    $data_ingestao = $_GET['data_ingestao'];
+function get_consume($requestBody) {
+    $user_id = $_GET['user_id'] ?? null;
+    $data_ingestao = $_GET['data_ingestao'] ?? null;
 
     if (!$user_id || !is_numeric($user_id)) {
-        return ["result" => "Id do usuário não pode ser nulo!", "status" => false];
+        return ["status" => false, "message" => "Id do usuário não pode ser nulo!"];
     }
 
-    if (!$data_ingestao){
-        return ["result" => "A data infromada não é válida", "status" => false];
+    if (!$data_ingestao) {
+        return ["status" => false, "message" => "A data informada não é válida"];
     }
 
     return get_consume_database($user_id, $data_ingestao);
+}
 
+function edit_consume($requestBody) {
+    $id = $requestBody['id'] ?? null;
+    $gramas = $requestBody['gramas'] ?? null;
+
+    if (!$id || !$gramas) {
+        return ["status" => false, "message" => "Parâmetros insuficientes."];
+    }
+
+    return update_consume_database($id, $gramas);
 }
 
 ?>

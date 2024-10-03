@@ -49,7 +49,7 @@ function get_consume_database($user_id, $data_ingestao) {
             c.user_id,
             c.data_ingestao,
             f.nome,
-            c.gramas AS consumed_gramas,
+            c.gramas,
             (f.calorias * c.gramas / f.gramas) AS calorias,
             (f.carboidratos * c.gramas / f.gramas) AS carboidratos,
             (f.proteinas * c.gramas / f.gramas) AS proteinas,
@@ -78,7 +78,7 @@ function get_consume_database($user_id, $data_ingestao) {
             $item['carboidratos'] = round($item['carboidratos'], 2);
             $item['proteinas'] = round($item['proteinas'], 2);
             $item['gorduras'] = round($item['gorduras'], 2);
-            $item['consumed_gramas'] = round($item['consumed_gramas'], 2);
+            $item['gramas'] = round($item['gramas'], 2);
         }
 
         if (!empty($response)) {
@@ -99,6 +99,68 @@ function get_consume_database($user_id, $data_ingestao) {
             'status' => false,
             'data' => null,
             'message' => $e->getMessage()
+        ];
+    }
+}
+
+function update_consume_database($id, $gramas) {
+    global $pdo;
+
+    $sqlSelect = "
+        SELECT f.gramas AS food_gramas, f.calorias, f.carboidratos, f.proteinas, f.gorduras
+        FROM consume c
+        JOIN food f ON c.food_id = f.id
+        WHERE c.id = :id
+    ";
+
+    $stmtSelect = $pdo->prepare($sqlSelect);
+    $stmtSelect->bindValue(':id', $id, PDO::PARAM_INT);
+
+    try {
+        $stmtSelect->execute();
+        $foodData = $stmtSelect->fetch(PDO::FETCH_ASSOC);
+
+        if (!$foodData) {
+            return [
+                'status' => false,
+                'data' => null,
+                'message' => 'Alimento não encontrado.'
+            ];
+        }
+
+        $sqlUpdate = "
+            UPDATE consume 
+            SET gramas = :gramas
+            WHERE id = :id
+        ";
+
+        $stmtUpdate = $pdo->prepare($sqlUpdate);
+        $stmtUpdate->bindValue(':gramas', $gramas, PDO::PARAM_STR);
+        $stmtUpdate->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmtUpdate->execute();
+
+        $calorias = ($foodData['calorias'] * $gramas) / $foodData['food_gramas'];
+        $carboidratos = ($foodData['carboidratos'] * $gramas) / $foodData['food_gramas'];
+        $proteinas = ($foodData['proteinas'] * $gramas) / $foodData['food_gramas'];
+        $gorduras = ($foodData['gorduras'] * $gramas) / $foodData['food_gramas'];
+
+        return [
+            'status' => true,
+            'data' => [
+                'id' => $id,
+                'gramas' => floatval($gramas),
+                'calorias' => round($calorias, 2),
+                'carboidratos' => round($carboidratos, 2),
+                'proteinas' => round($proteinas, 2),
+                'gorduras' => round($gorduras, 2),
+            ],
+            'message' => 'Gramas e macros atualizados com sucesso.'
+        ];
+    } catch (\PDOException $e) {
+        return [
+            'status' => false,
+            'data' => null,
+            'message' => "Erro ao atualizar: " . $e->getMessage()
         ];
     }
 }

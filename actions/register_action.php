@@ -10,11 +10,11 @@ function register_user(){
     $email          = $_POST['email'];
     
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        return ["result" => "O e-mail fornecido não é válido.", "status" => false];
+        return ["status" => false, "message" => "O e-mail fornecido não é válido."];
     }
 
     if (!$username || !$password || !$height || !$weight || !$activity_level || !$email) {
-        return ["result" => "Todos os campos são obrigatórios.", "status" => false] ;
+        return ["status" => false, "message" => "Todos os campos são obrigatórios."];
     }
 
     return register_user_database($username, $password, $height, $weight, $email, $activity_level);

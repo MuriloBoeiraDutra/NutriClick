@@ -6,8 +6,7 @@ function login_user() {
     $password = $_POST['password'];
 
     if (!$email || !$password) {
-        echo "Email ou senha não foram fornecidos.";
-        return;
+        return ["status" => false, "message" => "Email ou senha não foram fornecidos."];
     }
 
     return login_user_database($email, $password);

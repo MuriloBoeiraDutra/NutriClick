@@ -5,49 +5,49 @@ require_once 'utils/imports.php';
 
 $requestBody = json_decode(file_get_contents("php://input"), true);
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['REQUEST_METHOD'] !== 'DELETE' && $_SERVER['REQUEST_METHOD'] !== 'GET') {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['REQUEST_METHOD'] !== 'DELETE' && $_SERVER['REQUEST_METHOD'] !== 'GET' && $_SERVER['REQUEST_METHOD'] !== 'PUT') {
     http_response_code(405);
     die(json_encode(['status' => false, 'message' => 'Método não permitido'], JSON_UNESCAPED_UNICODE));
 }
 
 $result = [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $_POST = $requestBody;
-    $result = register_consume();
-} elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-    $result = delete_consume($requestBody);
-} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $user_id = $_GET['user_id'] ?? null;
-    $data_ingestao = $_GET['data_ingestao'] ?? null;
+switch ($_SERVER['REQUEST_METHOD']) {
+    case 'POST':
+        $_POST = $requestBody;
+        $result = register_consume();
+        break;
 
-    if (!$user_id || !$data_ingestao) {
-        http_response_code(400);
-        echo json_encode(['status' => false, 'message' => 'Parâmetros insuficientes.'], JSON_UNESCAPED_UNICODE);
-        exit;
-    }
+    case 'DELETE':
+        $result = delete_consume($requestBody);
+        break;
 
-    $result = get_consume_database($user_id, $data_ingestao);
+    case 'GET':
+        $result = get_consume($requestBody);
+        break;
+
+    case 'PUT':
+        $result = edit_consume($requestBody);
+        break;
 }
 
 if ($result['status'] === true) {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        http_response_code(201);
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-        http_response_code(204);
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        http_response_code(200);
-    }
+    http_response_code(match ($_SERVER['REQUEST_METHOD']) {
+        'POST' => 201,
+        'DELETE' => 204,
+        'GET' => 200,
+        'PUT' => 200,
+        default => 200
+    });
 } else {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        http_response_code(400);
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-        http_response_code(404);
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        http_response_code(404);
-    }
+    http_response_code(match ($_SERVER['REQUEST_METHOD']) {
+        'POST' => 400,
+        'DELETE' => 404,
+        'GET' => 404,
+        'PUT' => 400,
+        default => 400
+    });
 }
 
 echo json_encode($result, JSON_UNESCAPED_UNICODE);
-
 ?>
