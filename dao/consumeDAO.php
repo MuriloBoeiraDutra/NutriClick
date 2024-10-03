@@ -49,13 +49,12 @@ function get_consume_database($user_id, $data_ingestao) {
             c.user_id,
             c.data_ingestao,
             f.nome,
-            f.gramas AS food_gramas,
-            f.calorias,
-            f.carboidratos,
-            f.proteinas,
-            f.gorduras,
-            c.id AS id_consume,
             c.gramas AS consumed_gramas,
+            (f.calorias * c.gramas / f.gramas) AS calorias,
+            (f.carboidratos * c.gramas / f.gramas) AS carboidratos,
+            (f.proteinas * c.gramas / f.gramas) AS proteinas,
+            (f.gorduras * c.gramas / f.gramas) AS gorduras,
+            c.id AS id_consume,
             c.meal_time
         FROM 
             consume c
@@ -72,8 +71,8 @@ function get_consume_database($user_id, $data_ingestao) {
 
     try {
         $stmt->execute();
-        $response = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($response) {
+        $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($response)) {
             return [
                 'status' => true,
                 'data' => $response,
