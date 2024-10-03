@@ -114,3 +114,6 @@ Content-Type: application/json
     "id_food": 32,
     "gramas": 100
 }
+
+###
+GET http://localhost/routes/user/consume/?user_id=15&data_ingestao=2024-10-01

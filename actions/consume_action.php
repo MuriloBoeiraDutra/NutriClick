@@ -48,53 +48,20 @@ function delete_consume($requestBody) {
     return delete_consume_database($consume_id);
 }
 
-function put_consume($id_user, $id_food, $gramas) {
-    global $pdo;
+function get_cunsume($user_id, $data_ingestao){
+    $user_id = $_GET['user_id'];
+    $data_ingestao = $_GET['data_ingestao'];
 
-    // Primeiro, obtenha o ID do consumo existente
-    $stmt = $pdo->prepare("SELECT id FROM consume WHERE user_id = :id_user AND food_id = :id_food");
-    $stmt->bindValue(":id_user", $id_user, PDO::PARAM_INT);
-    $stmt->bindValue(":id_food", $id_food, PDO::PARAM_INT);
-    $stmt->execute();
-    
-    $consumeData = $stmt->fetch(\PDO::FETCH_ASSOC);
-    
-    if (!$consumeData) {
-        return ['status' => false, 'mensagem' => 'Consumo não encontrado.'];
+    if (!$user_id || !is_numeric($user_id)) {
+        return ["result" => "Id do usuário não pode ser nulo!", "status" => false];
     }
 
-    $consume_id = $consumeData['id'];
-
-    // Atualize as gramas na tabela consume
-    $stmt = $pdo->prepare("UPDATE consume SET gramas = :gramas WHERE id = :consume_id");
-    $stmt->bindValue(":gramas", $gramas, PDO::PARAM_INT);
-    $stmt->bindValue(":consume_id", $consume_id, PDO::PARAM_INT);
-
-    try {
-        $stmt->execute();
-
-        // Chame a função para calcular os macronutrientes
-        $resultadoMacros = put_consume_and_calculate_macros_database($id_food, $gramas);
-
-        if (!$resultadoMacros['status']) {
-            return ['status' => false, 'mensagem' => 'Erro ao calcular os macronutrientes.'];
-        }
-
-        // Retorne os dados do consumo atualizado
-        return [
-            'status' => true,
-            'dados' => [
-                'id_consume' => $consume_id,
-                'id_user' => $id_user,
-                'id_food' => $id_food,
-                'gramas' => $gramas,
-                'carboidratos' => $resultadoMacros['dados']['carboidratos'],
-                'proteinas' => $resultadoMacros['dados']['proteinas'],
-                'gorduras' => $resultadoMacros['dados']['gorduras'],
-            ],
-            'mensagem' => 'Consumo atualizado com sucesso.'
-        ];
-    } catch (\PDOException $e) {
-        return ['status' => false, 'mensagem' => $e->getMessage()];
+    if (!$data_ingestao){
+        return ["result" => "A data infromada não é válida", "status" => false];
     }
+
+    return get_consume_database($user_id, $data_ingestao);
+
 }
+
+?>

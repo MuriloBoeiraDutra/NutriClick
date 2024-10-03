@@ -40,30 +40,42 @@ function delete_consume_database($id) {
     }
 }
 
-function put_consume_and_calculate_macros_database($id_food, $gramas) {
+function get_consume_database($user_id, $data_ingestao) {
     global $pdo;
 
-    $foodResult = get_food_by_id_database($id_food);
-    
-    if (!$foodResult['status']) {
-        return ['status' => false, 'mensagem' => 'Alimento não encontrado.'];
+    $sql = "
+        SELECT 
+            f.id AS food_id,
+            c.user_id,
+            c.data_ingestao,
+            f.nome,
+            f.gramas AS food_gramas,
+            f.calorias,
+            f.carboidratos,
+            f.proteinas,
+            f.gorduras,
+            c.id AS id_consume,
+            c.gramas AS consumed_gramas,
+            c.meal_time
+        FROM 
+            consume c
+        JOIN 
+            food f ON c.food_id = f.id
+        WHERE 
+            c.user_id = :user_id AND 
+            c.data_ingestao = :data_ingestao
+    ";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->bindValue(':data_ingestao', $data_ingestao, PDO::PARAM_STR);
+
+    if ($stmt->execute()) {
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return ["result" => $results, "status" => true];
+    } else {
+        return ["result" => "Erro ao buscar dados.", "status" => false];
     }
-
-    $foodData = $foodResult['data'];
-
-    $carbs = ($foodData['carboidratos'] / $foodData['gramas']) * $gramas;
-    $proteins = ($foodData['proteinas'] / $foodData['gramas']) * $gramas;
-    $fats = ($foodData['gorduras'] / $foodData['gramas']) * $gramas;
-
-    return [
-        'status' => true,
-        'dados' => [
-            'carboidratos' => $carbs,
-            'proteinas' => $proteins,
-            'gorduras' => $fats,
-        ],
-        'mensagem' => 'Macronutrientes calculados com sucesso.'
-    ];
 }
 
 ?>
