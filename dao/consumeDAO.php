@@ -70,11 +70,28 @@ function get_consume_database($user_id, $data_ingestao) {
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->bindValue(':data_ingestao', $data_ingestao, PDO::PARAM_STR);
 
-    if ($stmt->execute()) {
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return ["result" => $results, "status" => true];
-    } else {
-        return ["result" => "Erro ao buscar dados.", "status" => false];
+    try {
+        $stmt->execute();
+        $response = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($response) {
+            return [
+                'status' => true,
+                'data' => $response,
+                'message' => null
+            ];
+        } else {
+            return [
+                'status' => false,
+                'data' => null,
+                'message' => "Nenhum registro encontrado para o ID do usuário {$user_id} na data {$data_ingestao}."
+            ];
+        }
+    } catch (\PDOException $e) {
+        return [
+            'status' => false,
+            'data' => null,
+            'message' => $e->getMessage()
+        ];
     }
 }
 

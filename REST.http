@@ -116,4 +116,4 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost/routes/user/consume/?user_id=15&data_ingestao=2024-10-01
+GET http://localhost/routes/user/consume/?user_id=1&data_ingestao=2024-10-01
