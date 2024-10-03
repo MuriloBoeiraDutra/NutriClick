@@ -71,9 +71,9 @@ Content-Type: application/json
 
 {
     "user_id": 15,
-    "food_id": 50,
-    "meal_time": "janta",
-    "gramas": 68
+    "food_id": 16,
+    "meal_time": "café da manhã",
+    "gramas": 10
 }
 
 
@@ -104,16 +104,7 @@ Content-Type: application/json
 
 {
 }
-###
-PUT http://localhost/routes/editgrams/
-Content-Type: application/json
 
-{
-    "id": 1,
-    "id_user": 1,
-    "id_food": 32,
-    "gramas": 100
-}
 
 ###
-GET http://localhost/routes/user/consume/?user_id=15&data_ingestao=2024-10-01
+GET http://localhost/routes/user/consume/?user_id=15&data_ingestao=2024-10-03

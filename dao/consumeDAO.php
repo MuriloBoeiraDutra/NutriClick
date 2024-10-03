@@ -72,6 +72,15 @@ function get_consume_database($user_id, $data_ingestao) {
     try {
         $stmt->execute();
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($response as &$item) {
+            $item['calorias'] = round($item['calorias'], 2);
+            $item['carboidratos'] = round($item['carboidratos'], 2);
+            $item['proteinas'] = round($item['proteinas'], 2);
+            $item['gorduras'] = round($item['gorduras'], 2);
+            $item['consumed_gramas'] = round($item['consumed_gramas'], 2);
+        }
+
         if (!empty($response)) {
             return [
                 'status' => true,
