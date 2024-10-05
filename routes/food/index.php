@@ -8,9 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     die();
 }
 
-if (isset($_GET['id'])) {
-    $result = get_food_by_id();
-} elseif (isset($_GET['nome'])) {
+if (isset($_GET['nome'])) {
     $result = get_food_by_name();
 } else {
     http_response_code(400);
