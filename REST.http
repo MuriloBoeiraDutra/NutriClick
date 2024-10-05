@@ -42,11 +42,11 @@ Content-Type: application/json
 // Get pelo nome dos alimentos e pelo ID
 
 ###
-GET http://localhost/routes/food/
+POST http://localhost/routes/food/
 Content-Type: application/json
 
 {
-    "nome": "A"
+    "nome": "ba"
 }
 
 ###
@@ -109,6 +109,9 @@ Content-Type: application/json
 
 ###
 GET http://localhost/routes/user/consume/?user_id=15&data_ingestao=2024-10-03
+
+###
+GET http://localhost/routes/food/?nome=A
 
 ###
 
