@@ -5,8 +5,8 @@ POST http://localhost/routes/login/
 Content-Type: application/json
 
 {
-    "password": "larinha",
-    "email": "lara@gmail.com"
+    "password": "parabixa",
+    "email": "paralol402@gmail.com"
 }
 
 ###
@@ -42,11 +42,11 @@ Content-Type: application/json
 // Get pelo nome dos alimentos e pelo ID
 
 ###
-POST http://localhost/routes/food/
+GET  http://localhost/routes/food/
 Content-Type: application/json
 
 {
-    "nome": "ba"
+    "nome": "Leite"
 }
 
 ###

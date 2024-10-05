@@ -1,24 +1,30 @@
 <?php
-/*
-function calcularTMB($peso, $altura, $nivel_atividade, $sexo) {
-    $idade_media = 30;
 
-    if ($sexo === 'masculino') {
-        $tmb = 10 * $peso + 6.25 * $altura - 5 * $idade_media + 5;
+function calculateTMB($weight, $height, $nivel_atividade, $gender, $age) {
+    if ($gender === 'feminino') {
+        $tmb = 10 * $weight + 6.25 * ($height * 100) - 5 * $age - 161;
     } else {
-        $tmb = 10 * $peso + 6.25 * $altura - 5 * $idade_media - 161;
+        $tmb = 10 * $weight + 6.25 * ($height * 100) - 5 * $age + 5;
     }
 
     switch ($nivel_atividade) {
         case 'sedentario':
-            return $tmb * 1.2;
+            $tmb *= 1.2;
+            break;
         case 'levemente ativo':
-            return $tmb * 1.375;
+            $tmb *= 1.375;
+            break;
         case 'ativo':
-            return $tmb * 1.55;
+            $tmb *= 1.55;
+            break;
+        case 'muito ativo':
+            $tmb *= 1.725;
+            break;
         default:
-            return $tmb;
+            break;
     }
+
+    return intval(round($tmb));
 }
-*/
+
 ?> 
