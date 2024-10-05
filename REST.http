@@ -96,7 +96,7 @@ DELETE http://localhost/routes/user/consume/
 Content-Type: application/json
 
 {
-    "id": 13
+    "id": 26
     //nao esta retornando quando da certo
 }
 
