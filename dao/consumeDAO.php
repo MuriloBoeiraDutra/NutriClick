@@ -1,16 +1,35 @@
 <?php 
 require_once "dao/db_connection.php";
 
-function register_consume_database($user_id, $food_id, $meal_time, $gramas) {
+function register_consume_database($user_id, $food_id, $meal_time, $gramas, $data_ingestao = null) {
     global $pdo;
-    
+
+    $stmt = $pdo->prepare("SELECT criado_em FROM user WHERE id = :user_id");
+    $stmt->bindValue(":user_id", $user_id, \PDO::PARAM_INT);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$user) {
+        return ["status" => false, "message" => "Usuário não encontrado."];
+    }
+
+    $created_at = $user['criado_em'];
+    $current_date = date('Y-m-d');
+    $data_ingestao_to_insert = $data_ingestao ? $data_ingestao : $current_date;
+
+    if ($data_ingestao_to_insert < $created_at) {
+        return ["status" => false, "message" => "A data de ingestão não pode ser anterior à data de criação do usuário."];
+    }
+
     $stmt = $pdo->prepare(
-        "INSERT INTO consume (user_id, food_id, meal_time, gramas) 
-        VALUES (:user_id, :food_id, :meal_time, :gramas)");
+        "INSERT INTO consume (user_id, food_id, data_ingestao, meal_time, gramas) 
+        VALUES (:user_id, :food_id, :data_ingestao, :meal_time, :gramas)"
+    );
     $stmt->bindValue(":user_id", $user_id, \PDO::PARAM_INT);
     $stmt->bindValue(":food_id", $food_id, \PDO::PARAM_INT);
+    $stmt->bindValue(":data_ingestao", $data_ingestao_to_insert, \PDO::PARAM_STR);
     $stmt->bindValue(":meal_time", $meal_time, \PDO::PARAM_STR);
-    $stmt->bindValue(":gramas", $gramas, \PDO::PARAM_STR);
+    $stmt->bindValue(":gramas", $gramas, \PDO::PARAM_INT);
         
     try {
         $stmt->execute();

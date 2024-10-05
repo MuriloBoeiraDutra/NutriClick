@@ -6,6 +6,7 @@ function register_consume() {
     $food_id = $_POST['food_id'] ?? null;
     $gramas = $_POST['gramas'] ?? null;
     $meal_time = $_POST['meal_time'] ?? null;
+    $date = $_POST['data_ingestao'] ?? null;
 
     $valid_meal_times = ['café da manhã', 'almoço', 'lanche', 'janta'];
 
@@ -31,7 +32,7 @@ function register_consume() {
         return ["status" => false, "message" => "Momento da refeição inválido!"];
     }
 
-    return register_consume_database($user_id, $food_id, $meal_time, $gramas);
+    return register_consume_database($user_id, $food_id, $meal_time, $gramas, $date);
 }
 
 function delete_consume($requestBody) {
