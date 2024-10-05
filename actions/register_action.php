@@ -8,6 +8,8 @@ function register_user(){
     $weight         = $_POST['peso'];
     $activity_level = $_POST['nivel_atividade'];
     $email          = $_POST['email'];
+    $age          = $_POST['idade'];
+    $gender         = $_POST['genero'];
     
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return ["status" => false, "message" => "O e-mail fornecido não é válido."];
@@ -17,7 +19,7 @@ function register_user(){
         return ["status" => false, "message" => "Todos os campos são obrigatórios."];
     }
 
-    return register_user_database($username, $password, $height, $weight, $email, $activity_level);
+    return register_user_database($username, $password, $height, $weight, $email, $activity_level, $age, $gender);
 }
 
 ?>

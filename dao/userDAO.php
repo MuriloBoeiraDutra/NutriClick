@@ -1,7 +1,7 @@
 <?php 
 require_once "dao/db_connection.php";
 
-function register_user_database($username, $password, $height, $weight, $email, $activity_level) {
+function register_user_database($username, $password, $height, $weight, $email, $activity_level, $age, $gender) {
     global $pdo;
     
     $stmt = $pdo->prepare(
@@ -27,7 +27,8 @@ function register_user_database($username, $password, $height, $weight, $email, 
 function login_user_database($email, $password) {
     global $pdo;
 
-    $stmt = $pdo->prepare("SELECT id, username, altura, peso, nivel_atividade, senha FROM user WHERE email = :email");
+    $stmt = $pdo->prepare("SELECT id, username, altura, peso, nivel_atividade, senha, genero, idade FROM user WHERE email = :email");
+
     $stmt->bindValue(":email", $email, \PDO::PARAM_STR);
 
     try {
@@ -38,6 +39,9 @@ function login_user_database($email, $password) {
             $hashed_password = $user['senha'];
             if (password_verify($password, $hashed_password)) {
                 unset($user['senha']);
+                //$tmb = calcularTMB($user['peso'], $user['altura'], $user['nivel_atividade'], $user['sexo']);
+                //$user['taxa_metabolica_basal'] = $tmb;
+
                 return [
                     'status' => true,
                     'data' => $user,

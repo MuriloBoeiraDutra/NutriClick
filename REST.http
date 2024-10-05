@@ -5,8 +5,8 @@ POST http://localhost/routes/login/
 Content-Type: application/json
 
 {
-    "email": "lara@gmail.com",
-    "password": "larinha"
+    "password": "larinha",
+    "email": "lara@gmail.com"
 }
 
 ###
@@ -29,13 +29,14 @@ Content-Type: application/json
 ###
 POST http://localhost/routes/register/
 Content-Type: application/json
+
 {
-    "username"        : "Lara",
-    "senha"           : "larinha",
-    "altura"          : 1.75,
-    "peso"            : 50,
+    "username"        : "Teste",
+    "senha"           : "testando",
+    "altura"          : 1.80,
+    "peso"            : 100,
     "nivel_atividade" : "ativo",
-    "email"           : "lara@gmail.com"
+    "email"           : "testao@gmail.com"
 }
 
 // Get pelo nome dos alimentos e pelo ID
@@ -45,7 +46,7 @@ GET http://localhost/routes/food/
 Content-Type: application/json
 
 {
-    "nome": ""
+    "nome": "A"
 }
 
 ###
