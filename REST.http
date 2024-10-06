@@ -120,7 +120,7 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost/routes/user/consume/?user_id=15&data_ingestao=2024-10-03
+GET http://localhost/routes/user/consume/?user_id=18&data_ingestao=2024-10-05
 
 ###
 GET http://localhost/routes/food/?nome=A
@@ -131,6 +131,7 @@ PUT http://localhost/routes/user/consume/
 Content-Type: application/json
 
 {
-    "id": 10,
+    "id": 27,
     "gramas": 20
+    //ta aceitando numeros negativos -_-
 }

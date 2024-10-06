@@ -1,4 +1,9 @@
 <?php 
+session_set_cookie_params([
+    "secure" => true,
+    "samesite" => "none"
+]);
+
 session_start();
 require_once 'utils/imports.php';
 require_once 'actions/food_action.php';

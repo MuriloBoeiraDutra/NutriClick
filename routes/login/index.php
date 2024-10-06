@@ -1,4 +1,8 @@
 <?php 
+session_set_cookie_params([
+    "secure" => true,
+    "samesite" => "none"
+]);
 session_start();
 require_once 'actions/login_action.php';
 require_once 'utils/cors.php';
