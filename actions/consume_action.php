@@ -22,8 +22,16 @@ function register_consume() {
         return ["status" => false, "message" => "Momento da refeição não pode ser nula!"];
     }
 
-    if ($gramas == null || $gramas < 0 || !is_numeric($gramas)) {
+    if ($gramas === null) {
         return ["status" => false, "message" => "As gramas não podem ser nulas"];
+    }
+    
+    if (!is_numeric($gramas)) {
+        return ["status" => false, "message" => "As gramas devem ser um número"];
+    }
+    
+    if ($gramas < 0) {
+        return ["status" => false, "message" => "As gramas não podem ser negativas"];
     }
 
     $meal_time_lower = strtolower($meal_time);
@@ -70,6 +78,14 @@ function edit_consume($requestBody) {
 
     if (!$id || !$gramas) {
         return ["status" => false, "message" => "Parâmetros insuficientes."];
+    }
+
+    if (!is_numeric($gramas)) {
+        return ["status" => false, "message" => "As gramas devem ser um número"];
+    }
+    
+    if ($gramas < 0) {
+        return ["status" => false, "message" => "As gramas não podem ser negativas"];
     }
 
     return update_consume_database($id, $gramas);

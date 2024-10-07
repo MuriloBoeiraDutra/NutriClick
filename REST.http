@@ -132,6 +132,5 @@ Content-Type: application/json
 
 {
     "id": 27,
-    "gramas": 20
-    //ta aceitando numeros negativos -_-
+    "gramas": -20
 }
