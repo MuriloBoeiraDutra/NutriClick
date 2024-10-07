@@ -71,11 +71,10 @@ POST http://localhost/routes/user/consume/
 Content-Type: application/json
 
 {
-    "user_id": 18,
-    "food_id": 16,
-    "data_ingestao" : "2023-03-07",
+    "food_id": 3,
+    "data_ingestao" : "2024-10-07",
     "meal_time": "café da manhã",
-    "gramas": 20
+    "gramas": 30
 }
 
 ###
@@ -83,10 +82,10 @@ POST http://localhost/routes/user/consume/
 Content-Type: application/json
 
 {
-    "user_id": 18,
+    "user_id": 6,
     "food_id": 16,
     "meal_time": "almoço",
-    "gramas": null
+    "gramas": 15
 }
 
 

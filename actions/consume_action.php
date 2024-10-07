@@ -2,7 +2,11 @@
 require_once "dao/consumeDAO.php";
 
 function register_consume() {
-    $user_id            = $_POST['user_id'] ?? null;
+    if (!isset($_SESSION['user_id'])) {
+        return ["status" => false, "message" => "Usuário não está autenticado."];
+    }
+    
+    $loggedUserId       = $_SESSION['user_id'];
     $food_id            = $_POST['food_id'] ?? null;
     $gramas             = $_POST['gramas'] ?? null;
     $meal_time          = $_POST['meal_time'] ?? null;
@@ -10,7 +14,7 @@ function register_consume() {
 
     $valid_meal_times = ['café da manhã', 'almoço', 'lanche', 'janta'];
 
-    if ($user_id == null || $user_id < 0 || !is_numeric($user_id)) {
+    if ($loggedUserId == null || $loggedUserId < 0 || !is_numeric($loggedUserId)) {
         return ["status" => false, "message" => "Id do usuário não pode ser nulo!"];
     }
 
@@ -40,7 +44,7 @@ function register_consume() {
         return ["status" => false, "message" => "Momento da refeição inválido!"];
     }
 
-    return register_consume_database($user_id, $food_id, $meal_time, $gramas, $data_ingestao);
+    return register_consume_database($loggedUserId, $food_id, $meal_time, $gramas, $data_ingestao);
 }
 
 function delete_consume($requestBody) {

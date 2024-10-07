@@ -42,6 +42,7 @@ function login_user_database($email, $password) {
         if ($user) {
             $hashed_password = $user['senha'];
             if (password_verify($password, $hashed_password)) {
+                $_SESSION['user_id'] = $user['id'];
                 unset($user['senha']);
                 $tmb = calculateTMB($user['peso'], $user['altura'], $user['nivel_atividade'], $user['genero'], $user['idade']);
                 $user['taxa_metabolica_basal'] = $tmb;
