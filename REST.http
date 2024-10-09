@@ -83,6 +83,7 @@ Content-Type: application/json
 
 {
     "user_id": 6,
+    "ue" : 3,
     "food_id": 16,
     "meal_time": "almoço",
     "gramas": 15
@@ -119,7 +120,7 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost/routes/user/consume/?user_id=18&data_ingestao=2024-10-05
+GET http://localhost/routes/user/consume/?data_ingestao=2024-10-05
 
 ###
 GET http://localhost/routes/food/?nome=A

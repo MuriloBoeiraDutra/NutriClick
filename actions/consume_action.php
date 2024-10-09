@@ -61,11 +61,15 @@ function delete_consume($requestBody) {
     return delete_consume_database($consume_id);
 }
 
-function get_consume($requestBody) {
-    $user_id = $_GET['user_id'] ?? null;
+function get_consume() {
+    if (!isset($_SESSION['user_id'])) {
+        return ["status" => false, "message" => "Usuário não está autenticado."];
+    }
+    
+    $loggedUserId  = $_SESSION['user_id'];
     $data_ingestao = $_GET['data_ingestao'] ?? null;
 
-    if (!$user_id || !is_numeric($user_id)) {
+    if (!$loggedUserId || !is_numeric($loggedUserId)) {
         return ["status" => false, "message" => "Id do usuário não pode ser nulo!"];
     }
 
@@ -73,7 +77,7 @@ function get_consume($requestBody) {
         return ["status" => false, "message" => "A data informada não é válida"];
     }
 
-    return get_consume_database($user_id, $data_ingestao);
+    return get_consume_database($loggedUserId, $data_ingestao);
 }
 
 function edit_consume($requestBody) {
